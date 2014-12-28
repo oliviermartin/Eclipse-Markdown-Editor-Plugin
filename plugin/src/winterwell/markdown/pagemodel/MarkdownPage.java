@@ -208,7 +208,6 @@ public class MarkdownPage {
 	private List<KLineType> lineTypes;
 	private Map<Integer,Object> pageObjects = new HashMap<Integer, Object>();
 
-	private boolean multiMarkdownSupport = true;
 	// TODO meta-data, footnotes, tables, link & image attributes
 	private static Pattern multiMarkdownTag = Pattern.compile("^([\\w].*):(.*)");
 	private Map<String, String> multiMarkdownTags = new HashMap<String, String>();
@@ -246,8 +245,14 @@ public class MarkdownPage {
 		Header currentHeader = dummyTopHeader;		
 		// Identify line types		
 		int lineNum = 0;
+
+		// Check if we should support the Multi-Markdown Metadata
+		IPreferenceStore pStore = Activator.getDefault().getPreferenceStore();
+		boolean multiMarkdownMetadataSupport =
+				pStore.getBoolean(MarkdownPreferencePage.PREF_MULTIMARKDOWN_METADATA);
+		
 		// Multi-markdown header
-		if (multiMarkdownSupport) {
+		if (multiMarkdownMetadataSupport) {
 			// The key is the text before the colon, and the data is the text
 			// after the
 			// colon. In the above example, notice that there are two lines of
